@@ -2,4 +2,4 @@
 .claude/
 *pycache*/
 *.pyc
-database.db
+*database.db

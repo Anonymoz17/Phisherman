@@ -26,11 +26,13 @@ Flask apps are built incrementally: routes first (to test URLs work), then datab
 - [x] Write helper functions to interact with database
 - [x] Test: Verify database.db file is created with correct schema
 
-### Phase 2: Routes (The Core)
-- [ ] Add route: `/track/<token>` - Captures clicks when user clicks link
-- [ ] Log click to database with timestamp
-- [ ] Add route: `/results` - Shows admin view of who clicked
-- [ ] Test: Access both routes and verify they work
+### Phase 2: Routes (The Core) ✅ COMPLETE
+**Completed:** 04/Dec/2025 18:55 SGT
+
+- [x] Add route: `/track/<token>` - Captures clicks when user clicks link
+- [x] Log click to database with timestamp
+- [x] Add route: `/results` - Shows admin view of who clicked
+- [x] Test: Access both routes and verify they work
 
 ### Phase 3: HTML Templates
 - [ ] Create `templates/` folder
