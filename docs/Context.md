@@ -1,5 +1,7 @@
 # Development Context - Phishing Simulation Tool
 
+**Last Updated:** 07/Dec/2025 19:20 SGT (UTC+8)
+
 ## Project Overview
 Building an open-source phishing simulation tool for SMEs as a portfolio project that provides real value to the community.
 
@@ -25,21 +27,30 @@ Building an open-source phishing simulation tool for SMEs as a portfolio project
 5. Learning React on the job
 
 ## Technical Stack Decisions
-- **Backend**: Python with Flask
-- **Frontend**: React with UI  library (React-Bootstrap or Shadcn/UI - TBD)
-- **Database**: -
-- **Email**: -
-- **Deployment**: -
-- **Charts**: -
-- **Auth**: Flask-Login (simple session management)
-- **UI Complexity**: -
+- **Backend**: Python with Flask ✅ (implemented in app.py)
+- **Frontend**: Plain HTML/CSS with Jinja2 templates ✅ (React planned for later versions)
+- **Database**: SQLite ✅ (file-based, zero configuration)
+- **Email**: smtplib with Gmail SMTP (Phase 4 - in progress)
+- **Deployment**: Local development only (MVP)
+- **Charts**: Not needed for MVP (basic tables sufficient)
+- **Auth**: None for MVP (planned for later versions)
+- **UI Complexity**: Simple HTML/CSS with inline styles ✅
 
 ## MVP Feature Set (Functional Focus)
 **Must Have (Core Functionality):**
-1. Email delivery (SMTP with wizard and validation)
-2. Click tracking (unique URLs per recipient)
-3. Campaign creation and management
-4. Basic analytics dashboard (who clicked, when, aggregate stats)
+1. Email delivery (SMTP with wizard and validation) - Phase 4 in progress
+2. Click tracking (unique URLs per recipient) ✅ Implemented
+3. Campaign creation and management - Phase 4-5 in progress
+4. Basic analytics dashboard (who clicked, when, aggregate stats) ✅ Implemented
+
+**Current Implementation Status:**
+- ✅ Database with users and clicks tables
+- ✅ Click tracking via `/track/<token>` route
+- ✅ Educational landing page after click
+- ✅ Admin results dashboard with styled table
+- ✅ Phishing email HTML template
+- 🔄 Email sending functionality (next up)
+- ⏳ Command-line campaign trigger
 
 ## Target User
 - **Primary**: Solo sysadmin (50-150 person company)
@@ -47,9 +58,13 @@ Building an open-source phishing simulation tool for SMEs as a portfolio project
 troubleshoot with docs
 
 ## Key Metrics to Track
+**Currently Implemented (MVP):**
+- ✅ Link clicked count (boolean flag in database)
+- ✅ Click timestamps (stored in clicks table)
+- ✅ User identity (name and email linked to clicks)
+
+**Planned for Future Versions:**
 - Email sent count
-- Link clicked count
-- Timestamps for all events
-- User identity (privacy concerns to address)
 - Device/browser information
 - Geolocation
+- Open rates (if tracking pixels are added)

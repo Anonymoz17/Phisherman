@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h2 {
+            color: #d9534f;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+        a {
+            background-color: #5bc0de;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
+    </head>
+    <body>
+        <h2>Password Expiration Notice</h2>
+
+        <p>Dear User,</p>
+
+        <p> Your account password will expire in <strong>24 hours</strong>.</p>
+
+        <p> To avoid losing access to your account, please verify your account information immediately by clicking the link below:</p>
+
+        <p><a href="{{ tracking_url }}">Verify Your Account Now</a></p>
+
+        <p>If you do not verify within 24 hours, your account will be locked for security purposes.</p>
+
+        <p>Thank you,<br>
+        IT Security Team</p>
+        
+    </body>
+</html>
