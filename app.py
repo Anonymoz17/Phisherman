@@ -1,6 +1,6 @@
 import sqlite3
 from datetime import datetime
-from flask import Flask
+from flask import Flask, render_template
 
 # Database configuration
 DATABASE = 'database.db'
@@ -95,7 +95,8 @@ def track_click(token):
     conn.commit()
     conn.close()
 
-    return f"Click tracked! Token: {token}"
+    # Show the educational landing page
+    return render_template('landing.html')
 
 @app.route('/results')
 def show_results():
@@ -110,15 +111,38 @@ def show_results():
         WHERE clicks.clicked = 1
     ''').fetchall()
 
-    # Build a simple text response
-    output = "<pre>=== Phishing Campaign Results ===\n\n"
+    conn.close()
 
-    for result in results:
-        output += f"Name: {result['name']}\n"
-        output += f"Email: {result['email']}\n"
-        output += f"Clicked at: {result['click_timestamp']}\n\n"
+    return render_template('results.html', results=results)
+
+@app.route('/preview-email')
+def preview_email():
+    """Preview what the phishing email looks like"""
+    # Create a sample tracking URL
+    sample_url = "http://localhost:5000/track/sample-token-preview"
+
+    return render_template('phishing_email.html', tracking_url=sample_url)
+
+@app.route('/debug-db')
+def debug_database():
+    """Debug route to see what's in the database"""
+    conn = get_db()
+
+    # Check all users
+    users = conn.execute('SELECT * FROM users').fetchall()
+
+    # Check all clicks
+    clicks = conn.execute('SELECT * FROM clicks').fetchall()
+
+    output = "<h2>Users Table:</h2><pre>"
+    for user in users:
+        output += f"{dict(user)}\n"
+
+    output += "</pre><h2>Clicks Table:</h2><pre>"
+    for click in clicks:
+        output += f"{dict(click)}\n"
+
     output += "</pre>"
-
     conn.close()
     return output
 

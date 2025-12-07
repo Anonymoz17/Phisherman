@@ -34,13 +34,15 @@ Flask apps are built incrementally: routes first (to test URLs work), then datab
 - [x] Add route: `/results` - Shows admin view of who clicked
 - [x] Test: Access both routes and verify they work
 
-### Phase 3: HTML Templates
-- [ ] Create `templates/` folder
-- [ ] Create `landing.html` - "You got phished!" educational page
-- [ ] Create `results.html` - Admin view displaying click data in table
-- [ ] Create `phishing_email.html` - HTML email template
-- [ ] Update routes to use `render_template()`
-- [ ] Test: View pages in browser
+### Phase 3: HTML Templates ✅ COMPLETE
+**Completed:** 07/Dec/2025 19:15 SGT
+
+- [x] Create `templates/` folder
+- [x] Create `landing.html` - "You got phished!" educational page
+- [x] Create `results.html` - Admin view displaying click data in table
+- [x] Create `phishing_email.html` - HTML email template
+- [x] Update routes to use `render_template()`
+- [x] Test: View pages in browser
 
 ### Phase 4: Email System
 - [ ] Import smtplib and email modules
