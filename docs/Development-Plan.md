@@ -44,13 +44,15 @@ Flask apps are built incrementally: routes first (to test URLs work), then datab
 - [x] Update routes to use `render_template()`
 - [x] Test: View pages in browser
 
-### Phase 4: Email System
-- [ ] Import smtplib and email modules
-- [ ] Write function to generate unique tracking tokens (UUID)
-- [ ] Write function to send emails via Gmail SMTP
-- [ ] Insert test users into database
-- [ ] Create tracking links with tokens
-- [ ] Test: Send email to yourself
+### Phase 4: Email System ✅ COMPLETE
+**Completed:** 13/Dec/2025 (SGT)
+
+- [x] Import smtplib and email modules
+- [x] Write function to generate unique tracking tokens (UUID)
+- [x] Write function to send emails via Gmail SMTP
+- [x] Insert test users into database
+- [x] Create tracking links with tokens
+- [x] Test: Send email to yourself
 
 ### Phase 5: Command-line Trigger
 - [ ] Add command-line argument parsing

@@ -1,9 +1,19 @@
 import sqlite3
 from datetime import datetime
 from flask import Flask, render_template
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import uuid
 
 # Database configuration
 DATABASE = 'database.db'
+
+# Email configuration
+SMTP_SERVER = 'smtp.gmail.com'
+SMTP_PORT = 587
+SENDER_EMAIL = 'luiztayza2035@gmail.com'
+SENDER_PASSWORD = 'srsw bugd zikt prif'
 
 def get_db():
     """Connect to the SQLite database and return the connection"""
@@ -36,6 +46,38 @@ def init_db():
     conn.commit()
     conn.close()
     print("Database initialized successfully!")
+
+def generate_token():
+    return str(uuid.uuid4())
+
+def send_email(recipient_email, recipient_name, tracking_url):
+    """Send phishing simulation email to a recipient"""
+
+    # Create the email message
+    message = MIMEMultipart('alternative')
+    message['Subject'] = 'Password Expiration Notice'
+    message['From'] = SENDER_EMAIL
+    message['To'] = recipient_email
+
+    # Load and render the HTML template with the tracking URL
+    with open('templates/phishing_email.html', 'r') as f:
+        html_content = f.read()
+
+    # Replace the tracking_url placeholder in the HTML
+    html_content = html_content.replace('{{ tracking_url }}', tracking_url)
+
+    # Attach HTML content to the message
+    html_part = MIMEText(html_content, 'html')
+    message.attach(html_part)
+
+    server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+    server.starttls()
+    server.login(SENDER_EMAIL, SENDER_PASSWORD)
+    server.send_message(message)
+    server.quit()
+
+    print(f"Email sent to {recipient_email}")
+
 
 app = Flask(__name__)
 
@@ -145,6 +187,56 @@ def debug_database():
     output += "</pre>"
     conn.close()
     return output
+
+@app.route('/send-test-email')
+def send_test_email():
+    """Send a test phishing email to yourself"""
+
+    # 1. Create or get a test user
+    conn = get_db()
+
+    # For testing, we'll use your email - CHANGE THIS to your actual email!
+    test_email = 'luiztayza2035@gmail.com' 
+    test_name = 'Test User'
+
+    # Check if user already exists
+    existing_user = conn.execute('SELECT * FROM users WHERE email = ?', (test_email,)).fetchone()
+
+    if existing_user:
+        user_id = existing_user['id']
+    else:
+        # Insert new test user
+        conn.execute('INSERT INTO users (email, name) VALUES (?, ?)', (test_email, test_name))
+        user_id = conn.execute('SELECT last_insert_rowid()').fetchone()[0]
+        conn.commit()
+
+    # 2. Generate a unique tracking token
+    token = generate_token()
+
+    # 3. Save the tracking token to the database
+    conn.execute('INSERT INTO clicks (user_id, tracking_token, clicked) VALUES (?, ?, 0)',
+                 (user_id, token))
+    conn.commit()
+    conn.close()
+
+    # 4. Build the tracking URL
+    tracking_url = f'http://localhost:5000/track/{token}'
+
+    # 5. Send the email!
+    try:
+        send_email(test_email, test_name, tracking_url)
+        return f'''
+            <h2>✅ Test Email Sent!</h2>
+            <p>Check your inbox at <strong>{test_email}</strong></p>
+            <p>Tracking URL: <a href="{tracking_url}">{tracking_url}</a></p>
+            <p><a href="/results">View Results</a> | <a href="/debug-db">Debug Database</a></p>
+        '''
+    except Exception as e:
+        return f'''
+            <h2>❌ Error Sending Email</h2>
+            <p>Error: {str(e)}</p>
+            <p>Make sure you've updated your Gmail credentials in app.py!</p>
+        '''
 
 if __name__ == '__main__':
     app.run(debug=True)
