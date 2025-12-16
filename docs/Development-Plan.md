@@ -54,11 +54,13 @@ Flask apps are built incrementally: routes first (to test URLs work), then datab
 - [x] Create tracking links with tokens
 - [x] Test: Send email to yourself
 
-### Phase 5: Command-line Trigger
-- [ ] Add command-line argument parsing
-- [ ] Create `send-campaign` command
-- [ ] Trigger: `python app.py send-campaign`
-- [ ] Test: Run command and verify emails are sent
+### Phase 5: Command-line Trigger ✅ COMPLETE
+**Completed:** 16/Dec/2025 (SGT)
+
+- [x] Add command-line argument parsing
+- [x] Create `send-campaign` command
+- [x] Trigger: `python app.py send-campaign`
+- [x] Test: Run command and verify emails are sent
 
 ### Phase 6: End-to-End Testing
 - [ ] Send email to yourself using send-campaign

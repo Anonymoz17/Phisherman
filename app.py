@@ -5,6 +5,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import uuid
+import sys
 
 # Database configuration
 DATABASE = 'database.db'
@@ -78,6 +79,35 @@ def send_email(recipient_email, recipient_name, tracking_url):
 
     print(f"Email sent to {recipient_email}")
 
+def send_campaign():
+    conn = get_db()
+    users = conn.execute('''SELECT * FROM users''').fetchall()
+
+    if not users:
+        print("No users in database. Add users first!")
+        conn.close()
+        return
+
+    print(f"Starting campaign for {len(users)} users...")
+
+    for user in users:
+        # Generate a UNIQUE token for THIS user
+        token = generate_token()
+
+        # Insert the token into clicks table
+        conn.execute('INSERT INTO clicks (user_id, tracking_token, clicked) VALUES (?, ?, 0)', (user['id'], token))
+
+        # Build the tracking URL
+        tracking_url = f'http://localhost:5000/track/{token}'
+
+        # Send the email
+        send_email(user['email'], user['name'], tracking_url)
+        print(f"Email has been sent to {user['email']}!")
+
+    conn.commit()
+    conn.close()
+
+    print(f"\n Campaign complete! Send {len(users)} emails.")
 
 app = Flask(__name__)
 
@@ -239,4 +269,12 @@ def send_test_email():
         '''
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Check if user provided a command-line argument
+    if len(sys.argv) > 1 and sys.argv[1] == 'send-campaign':
+        # User ran: python app.py send-campaign
+        print("🚀 Starting phishing campaign...\n")
+        send_campaign()
+    else:
+        # User ran: python app.py (no arguments)
+        # Start the Flask web server
+        app.run(debug=True)
